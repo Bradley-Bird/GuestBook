@@ -1,7 +1,22 @@
-import React from 'react';
+import { Switch, Route } from 'react-router-dom';
+import SignIn from '../components/SignIn';
+import SignUp from '../components/SignUp';
+import { useRouteLocation } from '../context/UserContext';
 
 function Auth() {
-  return <div>Auth</div>;
+  const { path } = useRouteLocation();
+  return (
+    <>
+      <Switch>
+        <Route path={`/auth/signIn`}>
+          <SignIn />
+        </Route>
+        <Route path={`/auth/signUp`}>
+          <SignUp />
+        </Route>
+      </Switch>
+    </>
+  );
 }
 
 export default Auth;
