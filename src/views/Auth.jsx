@@ -1,18 +1,17 @@
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, useRouteMatch } from 'react-router-dom';
 import SignIn from '../components/SignIn';
 import SignUp from '../components/SignUp';
-import { useRouteLocation } from '../context/UserContext';
 
 function Auth() {
-  const { path } = useRouteLocation();
+  const { url, path } = useRouteMatch();
   return (
     <>
       <Switch>
-        <Route path={`/auth/signIn`}>
-          <SignIn />
+        <Route path={`${path}/signIn`}>
+          <SignIn url={url} />
         </Route>
-        <Route path={`/auth/signUp`}>
-          <SignUp />
+        <Route path={`${path}/signUp`}>
+          <SignUp url={url} />
         </Route>
       </Switch>
     </>
