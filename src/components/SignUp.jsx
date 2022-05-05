@@ -13,7 +13,6 @@ import { Link } from 'react-router-dom';
 import { useUser } from '../context/UserContext';
 
 function SignUp({ url }) {
-  // const context = useUser();
   const { signUpUser } = useUser();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');

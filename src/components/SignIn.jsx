@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -12,8 +12,13 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Link } from 'react-router-dom';
+import { useUser } from '../context/UserContext';
 
 function SignIn({ url }) {
+  const { signInUser } = useUser();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
   function Copyright(props) {
     return (
       <Typography
@@ -34,13 +39,9 @@ function SignIn({ url }) {
 
   const theme = createTheme();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    await signInUser(email, password);
   };
 
   return (
@@ -75,6 +76,8 @@ function SignIn({ url }) {
               label="Email Address"
               name="email"
               autoComplete="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               autoFocus
             />
             <TextField
@@ -85,6 +88,8 @@ function SignIn({ url }) {
               label="Password"
               type="password"
               id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               autoComplete="current-password"
             />
             <FormControlLabel
