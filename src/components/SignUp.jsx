@@ -40,7 +40,8 @@ function SignUp({ url }) {
     try {
       event.preventDefault();
       await signUpUser(email, password);
-      const url = location.state.from
+
+      const url = location.state?.from
         ? location.state.from.pathname
         : '/guestbook';
       history.replace(url);
@@ -101,7 +102,7 @@ function SignUp({ url }) {
           </Button>
           <Grid container>
             <Grid item>
-              <Typography color={'error'} component="subtitle2" variant="h6">
+              <Typography color={'error'} variant="subtitle2">
                 {errorMessage}
               </Typography>
             </Grid>

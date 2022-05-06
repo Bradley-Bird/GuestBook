@@ -12,16 +12,19 @@ import {
 } from '@mui/material';
 import { IoIosHome } from 'react-icons/io';
 import { useUser } from '../context/UserContext';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { createEntry, getEntries } from '../services/entries';
 import Markdown from '../components/Markdown';
+import { signOutUser } from '../services/auth';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 function GuestBook() {
-  const { user } = useUser();
+  const { user, setUser } = useUser();
   const [signature, setSignature] = useState('');
   const [loading, setLoading] = useState(true);
   const [entries, setEntries] = useState([]);
   const [error, setError] = useState('');
+  const history = useHistory();
 
   useEffect(() => {
     getEntries()
@@ -36,15 +39,31 @@ function GuestBook() {
     console.log(user.id, signature);
     setSignature('');
   };
+  const handleSignOut = () => {
+    signOutUser().then(setUser({})).finally(history.push('/'));
+  };
   return (
     <>
       <Container component="header">
         <CssBaseline />
-        <Link to="/">
-          <IconButton>
-            <IoIosHome />
-          </IconButton>
-        </Link>
+        <Grid container direction="row" justifyContent="space-between">
+          <Grid item>
+            <Link to="/">
+              <IconButton>
+                <IoIosHome />
+              </IconButton>
+            </Link>
+          </Grid>
+          <Grid item>
+            <Button
+              onClick={handleSignOut}
+              variant="outlined"
+              endIcon={<LogoutIcon />}
+            >
+              Logout
+            </Button>
+          </Grid>
+        </Grid>
         <Typography component="h1" variant="h5">
           Please sign the guest book!
         </Typography>

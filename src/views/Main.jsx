@@ -1,22 +1,16 @@
 import React from 'react';
 import { useLocation, useHistory, Link } from 'react-router-dom';
 import {
-  Box,
   Grid,
   Typography,
   Button,
   Container,
   CssBaseline,
-  TextField,
-  Divider,
   IconButton,
 } from '@mui/material';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 
 function Main() {
-  const history = useHistory();
-  const location = useLocation();
-
   return (
     <Container component="main">
       <CssBaseline />

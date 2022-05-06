@@ -43,7 +43,8 @@ function SignIn({ url }) {
     try {
       event.preventDefault();
       await signInUser(email, password);
-      const url = location.state.from
+      console.log(location);
+      const url = location.state?.from
         ? location.state.from.pathname
         : '/guestbook';
       console.log(url);
@@ -114,7 +115,7 @@ function SignIn({ url }) {
               </Link>
             </Grid>
             <Grid item>
-              <Typography color={'error'} component="subtitle2" variant="h6">
+              <Typography color={'error'} variant="subtitle2">
                 {errorMessage}
               </Typography>
             </Grid>
