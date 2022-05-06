@@ -9,12 +9,16 @@ import {
   TextField,
   Divider,
   IconButton,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+  Avatar,
 } from '@mui/material';
 import { IoIosHome } from 'react-icons/io';
 import { useUser } from '../context/UserContext';
 import { Link, useHistory } from 'react-router-dom';
 import { createEntry, getEntries } from '../services/entries';
-import Markdown from '../components/Markdown';
 import { signOutUser } from '../services/auth';
 import LogoutIcon from '@mui/icons-material/Logout';
 
@@ -43,7 +47,7 @@ function GuestBook() {
     signOutUser().then(setUser({})).finally(history.push('/'));
   };
   return (
-    <>
+    <Container component="main">
       <Container component="header">
         <CssBaseline />
         <Grid container direction="row" justifyContent="space-between">
@@ -88,38 +92,52 @@ function GuestBook() {
           </Button>
         </Box>
       </Container>
-      {loading ? (
-        <Container maxWidth="lg">
-          <Typography variant="body1">Loading...</Typography>
-        </Container>
-      ) : (
-        <>
+      <Divider />
+      <>
+        {loading ? (
           <Container maxWidth="lg">
-            <CssBaseline />
-            <Grid
-              item
-              xs={12}
-              md={8}
-              sx={{
-                '& .markdown': {
-                  py: 3,
-                },
-              }}
-            >
-              <Typography variant="h6" gutterBottom>
-                Join Us!
-              </Typography>
-              <Divider />
-              {entries.map((entry) => (
-                <Markdown className="markdown" key={entry.id}>
-                  {entry.content}
-                </Markdown>
-              ))}
-            </Grid>
+            <Typography variant="body1">Loading...</Typography>
           </Container>
-        </>
-      )}
-    </>
+        ) : (
+          <Container component="section">
+            <Typography variant="h6" gutterBottom>
+              Join Us!
+            </Typography>
+            <Divider />
+            <List
+              sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
+            >
+              {entries.map((entry) => (
+                <>
+                  <ListItem key={entry.id} alignItems="flex-start">
+                    <ListItemAvatar>
+                      <Avatar alt="" src="" />
+                    </ListItemAvatar>
+                    <ListItemText
+                      primary={entries.content}
+                      secondary={
+                        <>
+                          <Typography
+                            sx={{ display: 'inline' }}
+                            component="span"
+                            variant="body2"
+                            color="text.primary"
+                          >
+                            {entry.created_at}
+                          </Typography>
+                          {entry.email}
+                        </>
+                      }
+                    />
+                  </ListItem>
+                  <Divider variant="inset" component="li" />
+                </>
+              ))}
+            </List>
+          </Container>
+        )}
+      </>
+    </Container>
   );
 }
 
