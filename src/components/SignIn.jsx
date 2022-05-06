@@ -43,11 +43,9 @@ function SignIn({ url }) {
     try {
       event.preventDefault();
       await signInUser(email, password);
-      console.log(location);
       const url = location.state?.from
         ? location.state.from.pathname
         : '/guestbook';
-      console.log(url);
       history.replace(url);
     } catch (error) {
       setErrorMessage(error.message);

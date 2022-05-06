@@ -9,10 +9,10 @@ export async function getEntries() {
   return parseData(request);
 }
 
-export async function createEntry({ userId, content }) {
+export async function createEntry({ userId, signature }) {
   const request = await client
     .from('entries')
-    .insert({ guest_id: userId, content });
+    .insert({ guest_id: userId, content: signature });
   return parseData(request);
 }
 

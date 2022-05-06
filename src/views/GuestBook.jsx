@@ -35,7 +35,7 @@ function GuestBook() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    await createEntry({ id: user.id, signature });
+    await createEntry({ userId: user.id, signature });
     console.log(user.id, signature);
     setSignature('');
   };
