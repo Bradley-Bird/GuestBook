@@ -29,7 +29,7 @@ function GuestBook() {
   const [entries, setEntries] = useState([]);
   const [error, setError] = useState('');
   const history = useHistory();
-
+  console.log(entries);
   useEffect(() => {
     getEntries()
       .then(setEntries)
@@ -108,7 +108,8 @@ function GuestBook() {
               sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
             >
               {entries.map((entry) => (
-                <>
+                //had specifically call this fragment by name so that I could add the key
+                <React.Fragment key={entry.id}>
                   <ListItem key={entry.id} alignItems="flex-start">
                     <ListItemAvatar>
                       <Avatar alt="" src="" />
@@ -131,12 +132,13 @@ function GuestBook() {
                     />
                   </ListItem>
                   <Divider variant="inset" component="li" />
-                </>
+                </React.Fragment>
               ))}
             </List>
           </Container>
         )}
       </>
+      <p>{error}</p>
     </Container>
   );
 }
