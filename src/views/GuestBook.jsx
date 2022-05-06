@@ -114,7 +114,7 @@ function GuestBook() {
                       <Avatar alt="" src="" />
                     </ListItemAvatar>
                     <ListItemText
-                      primary={entries.content}
+                      primary={entry.content}
                       secondary={
                         <>
                           <Typography
@@ -123,9 +123,9 @@ function GuestBook() {
                             variant="body2"
                             color="text.primary"
                           >
-                            {entry.created_at}
+                            {user.email}-
                           </Typography>
-                          {entry.email}
+                          {new Date(entry.created_at).toLocaleString('en-US')}
                         </>
                       }
                     />
