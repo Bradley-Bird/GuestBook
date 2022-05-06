@@ -3,14 +3,18 @@ import { render } from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
 import App from './App';
 import { UserProvider } from './context/UserContext';
+import { ThemeProvider, createTheme } from '@mui/material/';
 
+export const theme = createTheme({});
 render(
   <React.StrictMode>
-    <Router>
+    <ThemeProvider theme={theme}>
       <UserProvider>
-        <App />
+        <Router>
+          <App />
+        </Router>
       </UserProvider>
-    </Router>
+    </ThemeProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

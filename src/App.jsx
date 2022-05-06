@@ -1,11 +1,16 @@
 import { Switch, Route } from 'react-router-dom';
-import SignUp from './views/Auth';
+import PrivateRoute from './components/PrivateRoute/PrivateRoute';
+import GuestBook from './views/GuestBook';
 import Main from './views/Main';
+import Auth from './views/Auth';
 export default function App() {
   return (
     <>
       <Switch>
-        <Route path="/auth" component={SignUp} />
+        <PrivateRoute path="/guestbook">
+          <GuestBook />
+        </PrivateRoute>
+        <Route path="/auth" component={Auth} />
         <Route path="/" component={Main} />
       </Switch>
     </>

@@ -6,19 +6,18 @@ const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
   const currentUser = getUser();
-  console.log(currentUser);
-  const [user, setUser] = useState({ currentUser } || { email: null });
+  const [user, setUser] = useState(currentUser || { user: {} });
 
   const signUpUser = async (email, password) => {
     const authUser = await signUp({ email, password });
     if (authUser) {
-      setUser(authUser);
+      setUser(authUser.user);
     }
   };
   const signInUser = async (email, password) => {
     const authUser = await signIn({ email, password });
     if (authUser) {
-      setUser(authUser);
+      setUser(authUser.user);
     }
   };
 
