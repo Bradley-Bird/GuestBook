@@ -8,8 +8,11 @@ import {
   CssBaseline,
   TextField,
   Divider,
+  IconButton,
 } from '@mui/material';
+import { IoIosHome } from 'react-icons/io';
 import { useUser } from '../context/UserContext';
+import { Link } from 'react-router-dom';
 import { createEntry, getEntries } from '../services/entries';
 import Markdown from '../components/Markdown';
 
@@ -37,6 +40,11 @@ function GuestBook() {
     <>
       <Container component="header">
         <CssBaseline />
+        <Link to="/">
+          <IconButton>
+            <IoIosHome />
+          </IconButton>
+        </Link>
         <Typography component="h1" variant="h5">
           Please sign the guest book!
         </Typography>
@@ -63,9 +71,7 @@ function GuestBook() {
       </Container>
       {loading ? (
         <Container maxWidth="lg">
-          <Typography component="body1" variant="h6">
-            Loading...
-          </Typography>
+          <Typography variant="body1">Loading...</Typography>
         </Container>
       ) : (
         <>
