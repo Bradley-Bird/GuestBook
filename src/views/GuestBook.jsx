@@ -21,6 +21,7 @@ import { Link, useHistory } from 'react-router-dom';
 import { createEntry, getEntries } from '../services/entries';
 import { signOutUser } from '../services/auth';
 import LogoutIcon from '@mui/icons-material/Logout';
+import Delete from '../components/Delete';
 
 function GuestBook() {
   const { user, setUser } = useUser();
@@ -28,8 +29,8 @@ function GuestBook() {
   const [loading, setLoading] = useState(true);
   const [entries, setEntries] = useState([]);
   const [error, setError] = useState('');
+  const [updateEntries, setUpdateEntries] = useState({});
   const history = useHistory();
-  console.log(entries);
   useEffect(() => {
     getEntries()
       .then(setEntries)
@@ -37,10 +38,18 @@ function GuestBook() {
       .finally(() => setLoading(false));
   }, []);
 
+  useEffect(() => {
+    setLoading(true);
+    getEntries()
+      .then(setEntries)
+      .catch(setError)
+      .finally(() => setLoading(false));
+  }, [updateEntries]);
+
   const handleSubmit = async (event) => {
     event.preventDefault();
-    await createEntry({ userId: user.id, signature });
-    console.log(user.id, signature);
+    const newEntry = await createEntry({ userId: user.id, signature });
+    setUpdateEntries(newEntry);
     setSignature('');
   };
   const handleSignOut = () => {
@@ -57,6 +66,9 @@ function GuestBook() {
                 <IoIosHome />
               </IconButton>
             </Link>
+          </Grid>
+          <Grid item>
+            <Delete update={setUpdateEntries} />
           </Grid>
           <Grid item>
             <Button
@@ -93,51 +105,50 @@ function GuestBook() {
         </Box>
       </Container>
       <Divider />
-      <>
-        {loading ? (
-          <Container maxWidth="lg">
-            <Typography variant="body1">Loading...</Typography>
-          </Container>
-        ) : (
-          <Container component="section">
-            <Typography variant="h6" gutterBottom>
-              Join Us!
-            </Typography>
-            <Divider />
-            <List
-              sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
-            >
-              {entries.map((entry) => (
-                //had specifically call this fragment by name so that I could add the key
-                <React.Fragment key={entry.id}>
-                  <ListItem key={entry.id} alignItems="flex-start">
-                    <ListItemAvatar>
-                      <Avatar alt="" src="" />
-                    </ListItemAvatar>
-                    <ListItemText
-                      primary={entry.content}
-                      secondary={
-                        <>
-                          <Typography
-                            sx={{ display: 'inline' }}
-                            component="span"
-                            variant="body2"
-                            color="text.primary"
-                          >
-                            {user.email}-
-                          </Typography>
-                          {new Date(entry.created_at).toLocaleString('en-US')}
-                        </>
-                      }
-                    />
-                  </ListItem>
-                  <Divider variant="inset" component="li" />
-                </React.Fragment>
-              ))}
-            </List>
-          </Container>
-        )}
-      </>
+
+      {loading ? (
+        <Container maxWidth="lg">
+          <Typography variant="body1">Loading...</Typography>
+        </Container>
+      ) : (
+        <Container component="section">
+          <Typography variant="h6" gutterBottom>
+            Join Us!
+          </Typography>
+          <Divider />
+          <List
+            sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
+          >
+            {entries.map((entry) => (
+              //had specifically call this fragment by name so that I could add the key
+              <React.Fragment key={entry.id}>
+                <ListItem alignItems="flex-start">
+                  <ListItemAvatar>
+                    <Avatar alt="" src="" />
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary={entry.content}
+                    secondary={
+                      <>
+                        <Typography
+                          sx={{ display: 'inline' }}
+                          component="span"
+                          variant="body2"
+                          color="text.primary"
+                        >
+                          {user.email}-
+                        </Typography>
+                        {new Date(entry.created_at).toLocaleString('en-US')}
+                      </>
+                    }
+                  />
+                </ListItem>
+                <Divider variant="inset" component="li" />
+              </React.Fragment>
+            ))}
+          </List>
+        </Container>
+      )}
       <p>{error}</p>
     </Container>
   );
