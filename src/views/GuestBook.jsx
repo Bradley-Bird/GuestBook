@@ -117,6 +117,7 @@ function GuestBook() {
           </Typography>
           <Divider />
           <List
+            name="guestList"
             sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
           >
             {entries.map((entry) => (

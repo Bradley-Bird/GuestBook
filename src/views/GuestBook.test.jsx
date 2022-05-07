@@ -8,9 +8,6 @@ import { UserProvider } from '../context/UserContext';
 import GuestBook from './GuestBook';
 import { userData, entries } from '../Tests/fixtures';
 
-const userInput = {
-  content: 'Fake Object',
-};
 export const theme = createTheme({
   palette: {
     primary: {
@@ -33,10 +30,10 @@ const server = setupServer(
   rest.post(
     `${process.env.SUPABASE_API_URL}/rest/v1/entries`,
     (req, res, ctx) => {
-      const { userInput } = req.body;
+      const { content } = req.body;
       return res(
         ctx.json({
-          userInput,
+          content,
           id: 1000,
           guest_id: '123123',
           created_at: '2022-06-06T16:44:08.718123+00:00',
@@ -64,7 +61,7 @@ afterAll(() => server.close());
 
 describe('GuestBook', () => {
   it('displays an input, and a list of signatures', async () => {
-    const container = render(
+    render(
       <ThemeProvider theme={theme}>
         <UserProvider>
           <MemoryRouter initialEntries={['/guestbook']}>
@@ -76,7 +73,8 @@ describe('GuestBook', () => {
     screen.getByRole('banner');
     screen.getByText(/loading/i);
     await screen.findByRole('heading', { name: /join us!/i });
-    const List = await screen.findAllByRole('listitem');
+    const section = screen.queryByRole('#root > main > section');
+    const List = await screen.findByRole('list');
     // screen.debug();
 
     const textBox = screen.getByRole('textbox', { name: /sign here/i });
@@ -89,7 +87,7 @@ describe('GuestBook', () => {
     userEvent.click(submitButton);
 
     await screen.findByText(/loading/i);
-    container.querySelector('#root > main > section');
+
     // const List = await screen.findAllByRole('listitem');
     console.log(List.children);
 
